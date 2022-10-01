@@ -1,7 +1,5 @@
 FROM gitpod/workspace-elixir:2022-09-26-11-35-42
 
-ARG USERNAME=gitpod
-
 RUN apt-get update && \
     apt-get install -y postgresql-client && \
     apt-get install -y inotify-tools && \
@@ -14,18 +12,20 @@ RUN apt-get update && \
     apt-get install -y rename && \
     apt-get install -y zsh
 
+ARG USERNAME=gitpod
+
 RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
 
-RUN apt-get update && \
-    apt-get install -y nodejs
+RUN sudo apt-get update && \
+    sudo apt-get install -y nodejs
 
 RUN gem install htmlbeautifier
 
 COPY setup-container.sh .
 RUN bash ./setup-container.sh
 
-ENV MIX_HOME=/root/.mix
-ENV HEX_HOME=/root/.hex
+ENV MIX_HOME=/home/gitpod/.mix
+ENV HEX_HOME=/home/gitpod/.hex
 
 RUN mix local.hex --force && \
     mix local.rebar --force
