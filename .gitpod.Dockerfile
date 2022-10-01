@@ -1,5 +1,7 @@
 FROM gitpod/workspace-elixir:2022-09-26-11-35-42
 
+ARG USERNAME=gitpod
+
 RUN apt-get update && \
     apt-get install -y postgresql-client && \
     apt-get install -y inotify-tools && \
