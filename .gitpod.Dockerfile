@@ -27,8 +27,6 @@ RUN sudo apt-get autoremove -y && \
     sudo apt-get clean -y && \
     sudo rm -rf /var/lib/apt/lists/*
 
-RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.3/zsh-in-docker.sh)"
-
 ENV MIX_HOME=/home/gitpod/.mix
 ENV HEX_HOME=/home/gitpod/.hex
 
