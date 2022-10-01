@@ -15,7 +15,9 @@ RUN sudo apt-get update && \
     sudo apt-get install -y gnupg2 && \
     sudo apt-get install -y rubygems && \
     sudo apt-get install -y rename && \
-    sudo apt-get install -y zsh
+    sudo apt-get install -y zsh && \
+    sudo apt-get install -y erlang && \
+    sudo apt-get install -y erlang-dialyzer
 
 RUN sudo curl -sL https://deb.nodesource.com/setup_16.x  | sudo bash -
 
