@@ -22,8 +22,6 @@ RUN sudo curl -sL https://deb.nodesource.com/setup_16.x  | sudo bash -
 RUN sudo apt-get update && \
     sudo apt-get install -y nodejs
 
-RUN gem install htmlbeautifier
-
 COPY setup-container.sh .
 RUN bash ./setup-container.sh
 
