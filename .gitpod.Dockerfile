@@ -1,18 +1,18 @@
 FROM gitpod/workspace-elixir:2022-09-26-11-35-42
 
-RUN apt-get update && \
-    apt-get install -y postgresql-client && \
-    apt-get install -y inotify-tools && \
-    apt-get install -y vim && \
-    apt-get install -y git && \
-    apt-get install -y curl && \
-    apt-get install -y wget && \
-    apt-get install -y gnupg2 && \
-    apt-get install -y rubygems && \
-    apt-get install -y rename && \
-    apt-get install -y zsh
-
 ARG USERNAME=gitpod
+
+RUN sudo apt-get update && \
+    sudo apt-get install -y postgresql-client && \
+    sudo apt-get install -y inotify-tools && \
+    sudo apt-get install -y vim && \
+    sudo apt-get install -y git && \
+    sudo apt-get install -y curl && \
+    sudo apt-get install -y wget && \
+    sudo apt-get install -y gnupg2 && \
+    sudo apt-get install -y rubygems && \
+    sudo apt-get install -y rename && \
+    sudo apt-get install -y zsh
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
 
