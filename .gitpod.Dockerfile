@@ -32,5 +32,3 @@ ENV HEX_HOME=/home/gitpod/.hex
 
 RUN mix local.hex --force && \
     mix local.rebar --force
-
-ENTRYPOINT [ "/bin/zsh" ]
