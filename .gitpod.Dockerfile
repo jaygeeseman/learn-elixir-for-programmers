@@ -2,6 +2,9 @@ FROM gitpod/workspace-elixir:latest
 
 ARG USERNAME=gitpod
 
+# apt-get update fails without getting the public key store
+RUN sudo curl -s https://packages.erlang-solutions.com/debian/erlang_solutions.asc | sudo apt-key add -
+
 RUN sudo apt-get update && \
     sudo apt-get install -y postgresql-client && \
     sudo apt-get install -y inotify-tools && \
