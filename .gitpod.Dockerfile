@@ -1,4 +1,4 @@
-FROM gitpod/workspace-elixir:2022-09-26-11-35-42
+FROM gitpod/workspace-elixir:latest
 
 ARG USERNAME=gitpod
 
