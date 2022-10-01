@@ -22,8 +22,7 @@ RUN sudo curl -sL https://deb.nodesource.com/setup_16.x  | sudo bash -
 RUN sudo apt-get update && \
     sudo apt-get install -y nodejs
 
-COPY setup-container.sh .
-RUN bash ./setup-container.sh
+RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.3/zsh-in-docker.sh)"
 
 ENV MIX_HOME=/home/gitpod/.mix
 ENV HEX_HOME=/home/gitpod/.hex
