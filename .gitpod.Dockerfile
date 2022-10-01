@@ -17,7 +17,7 @@ RUN sudo apt-get update && \
     sudo apt-get install -y rename && \
     sudo apt-get install -y zsh
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
+RUN sudo curl -sL https://deb.nodesource.com/setup_16.x  | sudo bash -
 
 RUN sudo apt-get update && \
     sudo apt-get install -y nodejs
