@@ -22,8 +22,10 @@ RUN sudo curl -sL https://deb.nodesource.com/setup_16.x  | sudo bash -
 RUN sudo apt-get update && \
     sudo apt-get install -y nodejs
 
-COPY setup-container.sh .
-RUN bash ./setup-container.sh
+# Cleanup apt-get
+RUN sudo apt-get autoremove -y && \
+    sudo apt-get clean -y && \
+    sudo rm -rf /var/lib/apt/lists/*
 
 ENV MIX_HOME=/home/gitpod/.mix
 ENV HEX_HOME=/home/gitpod/.hex
