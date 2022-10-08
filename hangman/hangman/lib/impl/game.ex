@@ -14,8 +14,13 @@ defmodule Hangman.Impl.Game do
   )
 
   def new_game do
+    Dictionary.random_word
+      |> new_game
+  end
+
+  def new_game(word) do
     %__MODULE__{
-      letters: Dictionary.random_word |> String.codepoints
+      letters: word |> String.codepoints
     }
   end
 
