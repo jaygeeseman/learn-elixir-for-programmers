@@ -24,13 +24,30 @@ defmodule HangmanImplGameTest do
     assert game.letters == ["w", "o", "m", "b", "a", "t"]
   end
 
-  test "make_move state doesn't change if a game is won or lost" do
+  test "make_move/2 state doesn't change if a game is won or lost" do
     for state <- [:won, :lost] do
-      game = Game.new_game("wombat")
-      game = Map.put(game, :game_state, state)
+      game = Game.new_game("wombat") |> Map.put(:game_state, state)
       { new_game, _tally } = Game.make_move(game, "x")
       assert new_game == game
     end
+  end
+
+  test "make_move/2 records guessed letters properly" do
+    game = Game.new_game("wombat")
+    { game, _tally } = Game.make_move(game, "x")
+    { game, _tally } = Game.make_move(game, "y")
+    { game, _tally } = Game.make_move(game, "x")
+    assert MapSet.equal?(game.used, MapSet.new(["x", "y"]))
+  end
+
+  test "make_move/2 reports a duplicate guess appropriately" do
+    { game, _tally } = Game.new_game("wombat") |> Game.make_move("x")
+    refute game.game_state == :already_used
+    { game, _tally } = Game.make_move(game, "y")
+    refute game.game_state == :aready_used
+    { new_game, _tally } = Game.make_move(game, "x")
+    assert new_game.game_state == :already_used
+    assert game.used == new_game.used
   end
 
 end
