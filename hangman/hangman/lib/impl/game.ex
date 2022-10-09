@@ -46,8 +46,7 @@ defmodule Hangman.Impl.Game do
     %{
       turns_left: game.turns_left,
       game_state: game.game_state,
-      # letters: [],
-      letters: Enum.map(game.letters, fn x -> "_" end),
+      letters: build_tally_letters(game),
       used: game.used |> MapSet.to_list |> Enum.sort
     }
   end
@@ -92,4 +91,16 @@ defmodule Hangman.Impl.Game do
   defp maybe_lost(_turns_left = 1), do: :lost
   @spec maybe_lost(integer) :: Type.state
   defp maybe_lost(_), do: :bad_guess
+
+  defp build_tally_letters(game) do
+    game.letters
+    |> Enum.map(&tally_letter(&1, Enum.member?(game.used, &1)))
+    # |> Enum.map(fn letter -> Enum.member?(game.used, letter) |> &tally_letter(letter) end)
+  end
+
+  defp tally_letter(letter, _in_word = true), do: letter
+  defp tally_letter(_letter, _), do: "_"
+  # defp tally_letter(_in_word = true, letter), do: letter
+  # defp tally_letter(_, _letter), do: "_"
+
 end
