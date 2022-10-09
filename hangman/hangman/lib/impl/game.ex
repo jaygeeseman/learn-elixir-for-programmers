@@ -46,7 +46,8 @@ defmodule Hangman.Impl.Game do
     %{
       turns_left: game.turns_left,
       game_state: game.game_state,
-      letters: [],
+      # letters: [],
+      letters: Enum.map(game.letters, fn x -> "_" end),
       used: game.used |> MapSet.to_list |> Enum.sort
     }
   end
@@ -61,9 +62,34 @@ defmodule Hangman.Impl.Game do
     %{ game | game_state: :already_used }
   end
 
-  @spec accept_guess(t, String.t, boolean) :: t
+  @spec accept_guess(t, String.t, any) :: t
   defp accept_guess(game, guess, _already_used) do
     %{ game | used: MapSet.put(game.used, guess) }
+    |> score_guess(Enum.member?(game.letters, guess))
   end
 
+  @spec score_guess(t, true) :: t
+  defp score_guess(game, _good_guess = true) do
+    new_state = maybe_won(MapSet.subset?(MapSet.new(game.letters), game.used))
+    %{ game | game_state: new_state }
+  end
+
+  @spec score_guess(t, any) :: t
+  defp score_guess(game, _bad_guess) do
+    # turns_left == 1 -> lost | decrement turns_left, :bad_guess
+    %{ game |
+      game_state: maybe_lost(game.turns_left),
+      turns_left: game.turns_left - 1
+    }
+  end
+
+  @spec maybe_won(true) :: Type.state
+  defp maybe_won(true), do: :won
+  @spec maybe_won(any) :: Type.state
+  defp maybe_won(_), do: :good_guess
+
+  @spec maybe_lost(1) :: Type.state
+  defp maybe_lost(_turns_left = 1), do: :lost
+  @spec maybe_lost(integer) :: Type.state
+  defp maybe_lost(_), do: :bad_guess
 end
