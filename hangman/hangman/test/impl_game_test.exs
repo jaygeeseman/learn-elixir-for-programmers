@@ -24,6 +24,23 @@ defmodule HangmanImplGameTest do
     assert game.letters == ["w", "o", "m", "b", "a", "t"]
   end
 
+  test "tally/1 returns appropriate tally" do
+    # Too lazy to DRY this up
+    game = Game.new_game("wombat")
+    tally = Game.tally(game)
+    assert tally.turns_left == game.turns_left
+    assert tally.game_state == game.game_state
+    assert tally.letters == ["_", "_", "_", "_", "_", "_"]
+    assert tally.used == MapSet.to_list(game.used)
+
+    { game, _tally } = Game.make_move(game, "w")
+    tally = Game.tally(game)
+    assert tally.turns_left == game.turns_left
+    assert tally.game_state == game.game_state
+    assert tally.letters == ["w", "_", "_", "_", "_", "_"]
+    assert tally.used == MapSet.to_list(game.used)
+  end
+
   test "make_move/2 state doesn't change if a game is already won or lost" do
     for state <- [:won, :lost] do
       game = Game.new_game("wombat") |> Map.put(:game_state, state)

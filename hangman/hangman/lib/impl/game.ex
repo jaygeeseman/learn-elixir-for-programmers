@@ -32,17 +32,17 @@ defmodule Hangman.Impl.Game do
   def make_move(game = %{ game_state: state }, _guess)
   when state in [:won, :lost] do
     game
-    |> return_with_tally
+    |> game_with_tally
   end
 
   def make_move(game, guess) do
     validate_guess(guess)
     |> accept_guess(game, MapSet.member?(game.used, guess))
-    |> return_with_tally
+    |> game_with_tally
   end
 
   @spec tally(t) :: Type.tally
-  defp tally(game) do
+  def tally(game) do
     %{
       turns_left: game.turns_left,
       game_state: game.game_state,
@@ -51,8 +51,8 @@ defmodule Hangman.Impl.Game do
     }
   end
 
-  @spec return_with_tally(t) :: { t, Type.tally }
-  defp return_with_tally(game) do
+  @spec game_with_tally(t) :: { t, Type.tally }
+  defp game_with_tally(game) do
     { game, tally(game) }
   end
 
