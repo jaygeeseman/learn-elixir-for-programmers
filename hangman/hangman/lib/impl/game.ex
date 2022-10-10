@@ -35,7 +35,6 @@ defmodule Hangman.Impl.Game do
     |> return_with_tally
   end
 
-  @spec make_move(t, String.t) :: { t, Type.tally }
   def make_move(game, guess) do
     accept_guess(game, guess, MapSet.member?(game.used, guess))
     |> return_with_tally
@@ -56,24 +55,22 @@ defmodule Hangman.Impl.Game do
     { game, tally(game) }
   end
 
-  @spec accept_guess(t, String.t, true) :: t
+  @spec accept_guess(t, String.t, any) :: t
   defp accept_guess(game, _guess, _already_used = true) do
     %{ game | game_state: :already_used }
   end
 
-  @spec accept_guess(t, String.t, any) :: t
   defp accept_guess(game, guess, _already_used) do
     %{ game | used: MapSet.put(game.used, guess) }
     |> score_guess(Enum.member?(game.letters, guess))
   end
 
-  @spec score_guess(t, true) :: t
+  @spec score_guess(t, any) :: t
   defp score_guess(game, _good_guess = true) do
     new_state = maybe_won(MapSet.subset?(MapSet.new(game.letters), game.used))
     %{ game | game_state: new_state }
   end
 
-  @spec score_guess(t, any) :: t
   defp score_guess(game, _bad_guess) do
     # turns_left == 1 -> lost | decrement turns_left, :bad_guess
     %{ game |
@@ -82,25 +79,25 @@ defmodule Hangman.Impl.Game do
     }
   end
 
-  @spec maybe_won(true) :: Type.state
-  defp maybe_won(true), do: :won
   @spec maybe_won(any) :: Type.state
+  defp maybe_won(true), do: :won
   defp maybe_won(_), do: :good_guess
 
-  @spec maybe_lost(1) :: Type.state
-  defp maybe_lost(_turns_left = 1), do: :lost
   @spec maybe_lost(integer) :: Type.state
+  defp maybe_lost(_turns_left = 1), do: :lost
   defp maybe_lost(_), do: :bad_guess
 
+  @spec build_tally_letters(t) :: List.t
   defp build_tally_letters(game) do
     game.letters
-    |> Enum.map(&tally_letter(&1, Enum.member?(game.used, &1)))
-    # |> Enum.map(fn letter -> Enum.member?(game.used, letter) |> &tally_letter(letter) end)
+    |> Enum.map(fn letter ->
+      Enum.member?(game.used, letter)
+      |> tally_letter(letter)
+    end)
   end
 
-  defp tally_letter(letter, _in_word = true), do: letter
-  defp tally_letter(_letter, _), do: "_"
-  # defp tally_letter(_in_word = true, letter), do: letter
-  # defp tally_letter(_, _letter), do: "_"
+  @spec tally_letter(any, String.t) :: String.t
+  defp tally_letter(_in_word = true, letter), do: letter
+  defp tally_letter(_, _letter), do: "_"
 
 end
