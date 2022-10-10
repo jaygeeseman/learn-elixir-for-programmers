@@ -41,7 +41,7 @@ defmodule HangmanImplGameTest do
     assert MapSet.equal?(game.used, MapSet.new(["w", "x", "y"]))
   end
 
-  test "make_move/2 can handle a sequence of moves" do
+  test "make_move/2 can handle a complete winning game" do
     # wombat, win
     [
       [ "x", :bad_guess,    6, [ "_", "_", "_", "_", "_", "_" ], [ "x" ]],
@@ -60,7 +60,9 @@ defmodule HangmanImplGameTest do
       [ "b", :won,          1, [ "w", "o", "m", "b", "a", "t" ], [ "a", "b", "c", "d", "e", "f", "g", "m", "o", "t", "w", "x" ]]
     ]
     |> test_sequence_of_moves("wombat")
+  end
 
+  test "make_move/2 can handle a complete losing game" do
     # hello, lose
     [
       [ "h", :good_guess,   7, [ "h", "_", "_", "_", "_" ], [ "h" ]],

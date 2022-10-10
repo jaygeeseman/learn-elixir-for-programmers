@@ -36,7 +36,8 @@ defmodule Hangman.Impl.Game do
   end
 
   def make_move(game, guess) do
-    accept_guess(game, guess, MapSet.member?(game.used, guess))
+    validate_guess(guess)
+    |> accept_guess(game, MapSet.member?(game.used, guess))
     |> return_with_tally
   end
 
@@ -55,12 +56,19 @@ defmodule Hangman.Impl.Game do
     { game, tally(game) }
   end
 
-  @spec accept_guess(t, String.t, any) :: t
-  defp accept_guess(game, _guess, _already_used = true) do
+  @spec validate_guess(String.t) :: String.t
+  defp validate_guess(guess) do
+    to_string(guess)
+    |> String.first
+    |> String.downcase
+  end
+
+  @spec accept_guess(String.t, t, any) :: t
+  defp accept_guess(_guess, game, _already_used = true) do
     %{ game | game_state: :already_used }
   end
 
-  defp accept_guess(game, guess, _already_used) do
+  defp accept_guess(guess, game, _already_used) do
     %{ game | used: MapSet.put(game.used, guess) }
     |> score_guess(Enum.member?(game.letters, guess))
   end
@@ -72,7 +80,6 @@ defmodule Hangman.Impl.Game do
   end
 
   defp score_guess(game, _bad_guess) do
-    # turns_left == 1 -> lost | decrement turns_left, :bad_guess
     %{ game |
       game_state: maybe_lost(game.turns_left),
       turns_left: game.turns_left - 1
