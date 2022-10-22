@@ -75,7 +75,7 @@ defmodule HangmanImplGameTest do
       [ "k", :bad_guess,    2, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "p" ]],
       [ "m", :bad_guess,    1, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "p" ]],
       [ "m", :already_used, 1, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "p" ]],
-      [ "n", :lost,         0, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "n", "p" ]],
+      [ "n", :lost,         0, [ "h", "e", "l", "l", "o" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "n", "p" ]], # When a game is lost, tally.letters is populated with the whole word
     ]
     |> test_sequence_of_moves("hello")
   end
@@ -91,7 +91,6 @@ defmodule HangmanImplGameTest do
     assert tally.turns_left == turns
     assert tally.letters == letters
     assert tally.used == used
-
     game
   end
 end
