@@ -5,13 +5,14 @@ defmodule Dictionary.Impl.WordList do
   @spec word_list(String.t) :: t
   def word_list(filepath) do
     filepath
+    |> Path.expand(__DIR__)
     |> File.read!()
     |> String.split(~r/\n/, trim: true)
   end
 
   @spec word_list() :: t
   def word_list() do
-    word_list("assets/words.txt")
+    word_list("../../assets/words.txt")
   end
 
   @spec random_word(t) :: String.t
