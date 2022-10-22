@@ -95,6 +95,10 @@ defmodule Hangman.Impl.Game do
   defp maybe_lost(_), do: :bad_guess
 
   @spec build_tally_letters(t) :: List.t
+  defp build_tally_letters(game = %{ game_state: :lost }) do
+    game.letters
+  end
+
   defp build_tally_letters(game) do
     game.letters
     |> Enum.map(fn letter ->

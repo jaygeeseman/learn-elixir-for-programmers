@@ -24,23 +24,6 @@ defmodule HangmanImplGameTest do
     assert game.letters == ["w", "o", "m", "b", "a", "t"]
   end
 
-  test "tally/1 returns appropriate tally" do
-    # Too lazy to DRY this up
-    game = Game.new_game("wombat")
-    tally = Game.tally(game)
-    assert tally.turns_left == game.turns_left
-    assert tally.game_state == game.game_state
-    assert tally.letters == ["_", "_", "_", "_", "_", "_"]
-    assert tally.used == MapSet.to_list(game.used)
-
-    { game, _tally } = Game.make_move(game, "w")
-    tally = Game.tally(game)
-    assert tally.turns_left == game.turns_left
-    assert tally.game_state == game.game_state
-    assert tally.letters == ["w", "_", "_", "_", "_", "_"]
-    assert tally.used == MapSet.to_list(game.used)
-  end
-
   test "make_move/2 state doesn't change if a game is already won or lost" do
     for state <- [:won, :lost] do
       game = Game.new_game("wombat") |> Map.put(:game_state, state)
@@ -92,7 +75,7 @@ defmodule HangmanImplGameTest do
       [ "k", :bad_guess,    2, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "p" ]],
       [ "m", :bad_guess,    1, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "p" ]],
       [ "m", :already_used, 1, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "p" ]],
-      [ "n", :lost,         0, [ "h", "e", "l", "l", "_" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "n", "p" ]],
+      [ "n", :lost,         0, [ "h", "e", "l", "l", "o" ], [ "a", "e", "h", "i", "j", "k", "l", "m", "n", "p" ]], # When a game is lost, tally.letters is populated with the whole word
     ]
     |> test_sequence_of_moves("hello")
   end
@@ -108,7 +91,6 @@ defmodule HangmanImplGameTest do
     assert tally.turns_left == turns
     assert tally.letters == letters
     assert tally.used == used
-
     game
   end
 end
