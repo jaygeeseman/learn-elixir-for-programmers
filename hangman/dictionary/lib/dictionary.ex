@@ -1,12 +1,11 @@
 defmodule Dictionary do
 
-  # Module attributes are created at compile time
-  @word_list "assets/words.txt"
-    |> File.read!()
-    |> String.split(~r/\n/, trim: true)
+  @spec start() :: List.t
+  defdelegate start(), to: Dictionary.Impl.WordList
 
-  def random_word do
-    @word_list
-    |> Enum.random()
-  end
+  @spec random_word() :: String.t
+  defdelegate random_word(), to: Dictionary.Impl.WordList
+
+  @spec random_word(List.t) :: String.t
+  defdelegate random_word(word_list), to: Dictionary.Impl.WordList
 end
