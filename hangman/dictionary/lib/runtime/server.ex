@@ -12,10 +12,6 @@ defmodule Dictionary.Runtime.Server do
   end
 
   def random_word() do
-    # Intentionally crash 1 in 3 times
-    if :rand.uniform < 0.33 do
-      Agent.get(@me, fn _ -> exit(:boom) end)
-    end
     Agent.get(@me, &WordList.random_word/1)
   end
 end
