@@ -10,10 +10,7 @@ defmodule B1Web.HangmanView do
     already_used: { "already-used", "You already used that letter" }
   }
 
-  def move_status(status) do
-    { class, msg } = @status_fields[status]
-    "<div class='status #{class}'>#{msg}</div>"
-  end
+  defdelegate figure_for(turns_left), to: B1Web.HangmanView.Helpers.FigureFor
 
   def continue_or_try_again(conn, status) when status in [ :won, :lost ] do
     button("Try again", to: Routes.hangman_path(conn, :new))
@@ -28,92 +25,8 @@ defmodule B1Web.HangmanView do
     end)
   end
 
-  def figure_for(0) do
-    ~s{
-      +--+
-      |  |
-      o  |
-     /|\\ |
-     / \\ |
-         |
-    _____|_
-    }
-  end
-  def figure_for(1) do
-    ~s{
-      +--+
-      |  |
-      o  |
-     /|\\ |
-     /   |
-         |
-    _____|_
-    }
-  end
-  def figure_for(2) do
-    ~s{
-      +--+
-      |  |
-      o  |
-     /|\\ |
-         |
-         |
-    _____|_
-    }
-  end
-  def figure_for(3) do
-    ~s{
-      +--+
-      |  |
-      o  |
-     / \\ |
-         |
-         |
-    _____|_
-    }
-  end
-  def figure_for(4) do
-    ~s{
-      +--+
-      |  |
-      o  |
-     /   |
-         |
-         |
-    _____|_
-    }
-  end
-  def figure_for(5) do
-    ~s{
-      +--+
-      |  |
-      o  |
-         |
-         |
-         |
-    _____|_
-    }
-  end
-  def figure_for(6) do
-    ~s{
-      +--+
-      |  |
-         |
-         |
-         |
-         |
-    _____|_
-    }
-  end
-  def figure_for(7) do
-    ~s{
-      +--+
-         |
-         |
-         |
-         |
-         |
-    _____|_
-    }
+  def move_status(status) do
+    { class, msg } = @status_fields[status]
+    "<div class='status #{class}'>#{msg}</div>"
   end
 end
